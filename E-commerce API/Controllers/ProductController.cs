@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_commerce_API.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -13,7 +15,7 @@ namespace E_commerce_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts()
         {
             var item = await _productRepository.GetProductAsync();
             return Ok(item);
@@ -23,6 +25,18 @@ namespace E_commerce_API.Controllers
         {
             var item = await _productRepository.GetProductByIdAsync(id);
             return Ok(item);
+        }
+
+        [HttpGet("brand")]
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
+        {
+            return Ok(await _productRepository.GetProductBrandsAsync());
+        }
+
+        [HttpGet("type")]
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductTypes()
+        {
+            return Ok(await _productRepository.GetProductTypesAsync());
         }
     }
 }

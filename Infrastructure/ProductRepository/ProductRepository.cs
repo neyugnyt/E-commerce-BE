@@ -1,5 +1,7 @@
-﻿using Core.Entiies.Product;
+﻿using Azure;
+using Core.Entiies.Product;
 using Core.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +17,31 @@ namespace Infrastructure.ProductRepository
         {
             _context = context;
         }
-        public Task<IReadOnlyList<Product>> GetProductAsync()
+        public async Task<IReadOnlyList<Product>> GetProductAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Products
+                                 .Include(p => p.ProductBrand)
+                                 .Include(p => p.ProductType)
+                                 .ToListAsync();
         }
 
-        public Task<Product> GetProductByIdAsync(int id)
+        public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.ProductBrands.ToListAsync();
+        }
+
+        public async Task<Product> GetProductByIdAsync(int id)
+        {
+            var product = await _context.Products
+                                        .Include(p => p.ProductBrand)
+                                        .Include(p => p.ProductType)
+                                        .FirstOrDefaultAsync(p => p.Id == id);
+            return product;
+        }
+
+        public async Task<IReadOnlyList<ProductType>> GetProductTypesAsync()
+        {
+            return await _context.ProductTypes.ToListAsync();
         }
     }
 }

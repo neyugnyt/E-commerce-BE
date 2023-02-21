@@ -1,5 +1,6 @@
 using Core.Interface;
 using Infrastructure;
+using Infrastructure.Data;
 using Infrastructure.ProductRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,6 +42,7 @@ namespace E_commerce_API
                 {
                     var context = services.GetRequiredService<DataContext>();
                     await context.Database.MigrateAsync();
+                    await DataContextSeed.SeedAsync(context, loggerFactory);
                 }
                 catch (Exception ex)
                 {
