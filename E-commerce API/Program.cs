@@ -1,8 +1,11 @@
 using Core.Interface;
+using E_commerce_API.Helpers;
 using Infrastructure;
 using Infrastructure.Data;
+using Infrastructure.GenericRepository;
 using Infrastructure.ProductRepository;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace E_commerce_API
 {
@@ -16,6 +19,8 @@ namespace E_commerce_API
 
             builder.Services.AddControllers();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -62,7 +67,7 @@ namespace E_commerce_API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseStaticFiles();
 
             app.MapControllers();
 
