@@ -6,6 +6,7 @@ using Infrastructure.GenericRepository;
 using Infrastructure.ProductRepository;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using E_commerce_API.Middleware;
 
 namespace E_commerce_API
 {
@@ -24,10 +25,12 @@ namespace E_commerce_API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             builder.Services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
             builder.Services.AddCors(options => options.AddPolicy(name: "E-commerce.FE", 
                 policy =>
                 {
@@ -59,9 +62,12 @@ namespace E_commerce_API
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                app.UseMiddleware<ExceptionMiddleware>();
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseCors("E-commerce.FE");
 
             app.UseHttpsRedirection();
