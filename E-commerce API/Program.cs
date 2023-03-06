@@ -7,6 +7,9 @@ using Infrastructure.ProductRepository;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using E_commerce_API.Middleware;
+using Microsoft.AspNetCore.Mvc;
+using E_commerce_API.Errors;
+using E_commerce_API.Extensions;
 
 namespace E_commerce_API
 {
@@ -19,8 +22,7 @@ namespace E_commerce_API
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddScoped<IProductRepository, ProductRepository>();
-            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -35,8 +37,10 @@ namespace E_commerce_API
                 policy =>
                 {
                     policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
-                }));
+                })
+            );
 
+            builder.Services.AddApplicationServices();
 
 
             var app = builder.Build();
@@ -58,6 +62,7 @@ namespace E_commerce_API
                     logger.LogError(ex, "An error occured during migrations");
                 }
             }
+            
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

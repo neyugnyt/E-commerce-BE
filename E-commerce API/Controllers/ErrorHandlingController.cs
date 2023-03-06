@@ -34,6 +34,10 @@ namespace E_commerce_API.Controllers
             return BadRequest(new ApiResponse(400));
         }
 
-
+        [HttpGet("badrequest/{id}")]
+        public ActionResult GetNotFoundRequest(int id)
+        {
+            return Ok();
+        }
     }
 }
