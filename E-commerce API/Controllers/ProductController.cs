@@ -27,9 +27,9 @@ namespace E_commerce_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDTO>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<ProductDTO>>> GetProducts(string sort)
         {
-            var spec = new ProductsWithTypesAndBrandsSpecification();
+            var spec = new ProductsWithTypesAndBrandsSpecification(sort);
 
             var products = await _productRepository.GetAsync(spec);
             return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDTO>>(products));
