@@ -2,6 +2,7 @@
 using Core.Entiies.Product;
 using Core.Interface;
 using Core.Specifications;
+using E_commerce_API.Helpers;
 using Infrastructure.Data.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,12 +28,19 @@ namespace E_commerce_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDTO>>> GetProducts(string sort)
+        public async Task<ActionResult<Pagination<ProductDTO>>> GetProducts([FromQuery]ProductSpecParams productParams)
         {
-            var spec = new ProductsWithTypesAndBrandsSpecification(sort);
+            
+            var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
+
+            var countSpec = new ProductWithFiltersForCountSpectification(productParams);
+
+            var totalItems = await _productRepository.CountAsync(countSpec);
 
             var products = await _productRepository.GetAsync(spec);
-            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDTO>>(products));
+
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDTO>>(products);
+            return Ok(new Pagination<ProductDTO>(productParams.PageIndex, productParams.PageSize, totalItems, data));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDTO>> GetProductById(int id)
