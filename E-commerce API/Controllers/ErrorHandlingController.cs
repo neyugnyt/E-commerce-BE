@@ -26,7 +26,7 @@ namespace E_commerce_API.Controllers
         public ActionResult GetServerError()
         {
             var thing = _context.Products.Find(42);
-            return Ok();
+            return Ok(new ApiResponse(500));
         }
         [HttpGet("badrequest")]
         public ActionResult GetBadRequest()
@@ -34,10 +34,11 @@ namespace E_commerce_API.Controllers
             return BadRequest(new ApiResponse(400));
         }
 
-        [HttpGet("badrequest/{id}")]
+        [HttpGet("badrequest/product/{id}")]
         public ActionResult GetNotFoundRequest(int id)
         {
-            return Ok();
+
+            return Ok(new ApiResponse(400));
         }
     }
 }

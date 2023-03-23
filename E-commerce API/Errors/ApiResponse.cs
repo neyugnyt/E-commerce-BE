@@ -29,7 +29,7 @@ namespace E_commerce_API.Errors
                 404 => "Not found",
                 405 => "Method not allowed",
                 406 => "Not acceptable",
-                407 => ",Proxy authentication required",
+                407 => "Proxy authentication required",
                 408 => "Request timeout",
                 409 => "Conflict",
                 410 => "Gone",

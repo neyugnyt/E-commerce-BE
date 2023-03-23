@@ -33,7 +33,7 @@ namespace E_commerce_API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddCors(options => options.AddPolicy(name: "E-commerce.FE", 
+            builder.Services.AddCors(options => options.AddPolicy(name: "E-commerce.Client", 
                 policy =>
                 {
                     policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
@@ -73,7 +73,7 @@ namespace E_commerce_API
             }
 
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
-            app.UseCors("E-commerce.FE");
+            app.UseCors("E-commerce.Client");
 
             app.UseHttpsRedirection();
 
