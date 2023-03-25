@@ -1,5 +1,6 @@
 ﻿using Core.Interface;
 using E_commerce_API.Errors;
+using Infrastructure.BasketRepository;
 using Infrastructure.GenericRepository;
 using Infrastructure.ProductRepository;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ namespace E_commerce_API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.Configure<ApiBehaviorOptions>(options =>
             {

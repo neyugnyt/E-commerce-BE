@@ -10,6 +10,7 @@ using E_commerce_API.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using E_commerce_API.Errors;
 using E_commerce_API.Extensions;
+using StackExchange.Redis;
 
 namespace E_commerce_API
 {
@@ -31,6 +32,11 @@ namespace E_commerce_API
             builder.Services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+            builder.Services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(configuration);
             });
 
             builder.Services.AddCors(options => options.AddPolicy(name: "E-commerce.Client", 
