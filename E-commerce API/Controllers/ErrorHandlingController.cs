@@ -1,5 +1,5 @@
 ﻿using E_commerce_API.Errors;
-using Infrastructure;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_commerce_API.Controllers

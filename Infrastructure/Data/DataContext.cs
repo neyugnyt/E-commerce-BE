@@ -3,7 +3,7 @@ using Core.Entiies.User;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Infrastructure
+namespace Infrastructure.Data
 {
     public class DataContext : DbContext
     {
@@ -11,7 +11,7 @@ namespace Infrastructure
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
-        public DbSet<ProductType> ProductTypes{ get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

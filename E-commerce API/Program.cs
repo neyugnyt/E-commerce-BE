@@ -1,6 +1,5 @@
 using Core.Interface;
 using E_commerce_API.Helpers;
-using Infrastructure;
 using Infrastructure.Data;
 using Infrastructure.GenericRepository;
 using Infrastructure.ProductRepository;
@@ -11,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using E_commerce_API.Errors;
 using E_commerce_API.Extensions;
 using StackExchange.Redis;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
+using Core.Entiies.Identity;
 
 namespace E_commerce_API
 {
@@ -33,10 +35,15 @@ namespace E_commerce_API
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+            });
             builder.Services.AddSingleton<IConnectionMultiplexer>(c =>
             {
-                var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
-                return ConnectionMultiplexer.Connect(configuration);
+                
+                return ConnectionMultiplexer.Connect("localhost:6379,password=123456,ConnectTimeout=10000");
             });
 
             builder.Services.AddCors(options => options.AddPolicy(name: "E-commerce.Client", 
@@ -47,7 +54,7 @@ namespace E_commerce_API
             );
 
             builder.Services.AddApplicationServices();
-
+            builder.Services.AddIdentityServices();
 
             var app = builder.Build();
 
@@ -61,6 +68,11 @@ namespace E_commerce_API
                     var context = services.GetRequiredService<DataContext>();
                     await context.Database.MigrateAsync();
                     await DataContextSeed.SeedAsync(context, loggerFactory);
+
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+                    await identityContext.Database.MigrateAsync();
+                    await AppIdentityDbContextSeed.SeedUserAsync(userManager);
                 }
                 catch (Exception ex)
                 {

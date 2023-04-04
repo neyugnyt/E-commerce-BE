@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Core.Entiies.Product;
 using Core.Interface;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
