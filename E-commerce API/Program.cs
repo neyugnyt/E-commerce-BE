@@ -54,7 +54,7 @@ namespace E_commerce_API
             );
 
             builder.Services.AddApplicationServices();
-            builder.Services.AddIdentityServices();
+            builder.Services.AddIdentityServices(builder.Configuration);
 
             var app = builder.Build();
 
@@ -94,7 +94,7 @@ namespace E_commerce_API
             app.UseCors("E-commerce.Client");
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseStaticFiles();
 
