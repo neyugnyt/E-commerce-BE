@@ -1,5 +1,6 @@
 ﻿using E_commerce_API.Errors;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_commerce_API.Controllers
@@ -32,6 +33,14 @@ namespace E_commerce_API.Controllers
         public ActionResult GetBadRequest()
         {
             return BadRequest(new ApiResponse(400));
+        }
+
+
+        [HttpGet("testauth")]
+        [Authorize]
+        public ActionResult<string> GetToken()
+        {
+            return "Secret Token";
         }
 
         [HttpGet("badrequest/product/{id}")]
