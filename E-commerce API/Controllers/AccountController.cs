@@ -97,6 +97,11 @@ namespace E_commerce_API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO register)
         {
+            if(CheckEmailExistsAsync(register.Email).Result.Value)
+            {
+                return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Email is in use" } });
+            }
+
             var user = new AppUser
             {
                 DisplayName = register.DisplayName,
