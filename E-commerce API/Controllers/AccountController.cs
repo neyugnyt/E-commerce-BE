@@ -99,7 +99,7 @@ namespace E_commerce_API.Controllers
         {
             if(CheckEmailExistsAsync(register.Email).Result.Value)
             {
-                return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Email is in use" } });
+                return BadRequest(new ApiResponse(400, "Email is in use"));
             }
 
             var user = new AppUser

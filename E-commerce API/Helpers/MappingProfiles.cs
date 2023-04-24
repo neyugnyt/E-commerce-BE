@@ -17,6 +17,7 @@ namespace E_commerce_API.Helpers
             CreateMap<Address, AddressDTO>().ReverseMap();
             CreateMap<CustomerBasketDTO, CustomerBasket>();
             CreateMap<BasketItemDTO, BasketItem>();
+            CreateMap<AddressDTO, Core.Entiies.OrderAggregate.Address>();
         }
     }
 }
