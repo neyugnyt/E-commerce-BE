@@ -32,7 +32,7 @@ namespace Core.Entiies.OrderAggregate
 
         public OrderStatus Status { get; set; }
 
-        public string PaymentIntentId { get; set; }
+        public string? PaymentIntentId { get; set; }
 
         public decimal GetTotal()
         {

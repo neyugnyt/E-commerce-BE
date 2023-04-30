@@ -1,6 +1,7 @@
 ﻿using Core.Interface;
 using E_commerce_API.Errors;
 using Infrastructure.BasketRepository;
+using Infrastructure.Data.UniOfWork;
 using Infrastructure.GenericRepository;
 using Infrastructure.ProductRepository;
 using Infrastructure.Services;
@@ -16,6 +17,7 @@ namespace E_commerce_API.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.Configure<ApiBehaviorOptions>(options =>
             {
