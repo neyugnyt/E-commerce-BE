@@ -27,6 +27,7 @@ namespace E_commerce_API.Controllers
             _mapper = mapper;
         }
 
+        [Cached(600)]
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductDTO>>> GetProducts([FromQuery]ProductSpecParams productParams)
         {
@@ -42,6 +43,8 @@ namespace E_commerce_API.Controllers
             var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDTO>>(products);
             return Ok(new Pagination<ProductDTO>(productParams.PageIndex, productParams.PageSize, totalItems, data));
         }
+
+        [Cached(600)]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDTO>> GetProductById(int id)
         {
@@ -51,12 +54,16 @@ namespace E_commerce_API.Controllers
             return _mapper.Map<Product, ProductDTO>(product);
         }
 
+
+        [Cached(600)]
         [HttpGet("brand")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
             return Ok(await _productBrandRepository.GetAllAsync());
         }
 
+
+        [Cached(600)]
         [HttpGet("type")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductTypes()
         {

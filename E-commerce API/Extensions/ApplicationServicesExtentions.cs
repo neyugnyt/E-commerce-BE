@@ -13,6 +13,8 @@ namespace E_commerce_API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+
+            services.AddSingleton<IResponseCacheService, ResponseCacheService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IProductRepository, ProductRepository>();
