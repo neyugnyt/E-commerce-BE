@@ -1,18 +1,14 @@
-using Core.Interface;
-using E_commerce_API.Helpers;
+
 using Infrastructure.Data;
-using Infrastructure.GenericRepository;
-using Infrastructure.ProductRepository;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using E_commerce_API.Middleware;
-using Microsoft.AspNetCore.Mvc;
-using E_commerce_API.Errors;
 using E_commerce_API.Extensions;
 using StackExchange.Redis;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Core.Entiies.Identity;
+using Microsoft.Extensions.FileProviders;
 
 namespace E_commerce_API
 {
@@ -31,14 +27,25 @@ namespace E_commerce_API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            //builder.Services.AddDbContext<DataContext>(options =>
+            //{
+            //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            //});
+
+            //builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+            //{
+            //    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+            //});
             builder.Services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                var connetionString = builder.Configuration.GetConnectionString("DefaultConnection");
+                options.UseMySql(connetionString, ServerVersion.AutoDetect(connetionString));
             });
 
             builder.Services.AddDbContext<AppIdentityDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+                var connetionString = builder.Configuration.GetConnectionString("IdentityConnection");
+                options.UseMySql(connetionString, ServerVersion.AutoDetect(connetionString));
             });
             builder.Services.AddSingleton<IConnectionMultiplexer>(c =>
             {
@@ -97,9 +104,16 @@ namespace E_commerce_API
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Content")   
+                ), RequestPath = "/content"
+            });
+
 
             app.MapControllers();
-
+            app.MapFallbackToController("Index", "Fallback");
             app.Run();
         }
     }

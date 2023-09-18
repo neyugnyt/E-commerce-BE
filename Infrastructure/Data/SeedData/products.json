@@ -142,5 +142,13 @@
     "PictureUrl": "images/products/boot-ang1.png",
     "ProductTypeId": 3,
     "ProductBrandId": 1
+  },
+  {
+    "Name": "Hoodie 01",
+    "Description": "Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.",
+    "Price": 180,
+    "PictureUrl": "images/products/hoodie01.jpg",
+    "ProductTypeId": 5,
+    "ProductBrandId": 1
   }
 ]
