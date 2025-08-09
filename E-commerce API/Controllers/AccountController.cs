@@ -45,7 +45,9 @@ namespace E_commerce_API.Controllers
         [HttpGet("emailexists")]
         public async Task<ActionResult<bool>> CheckEmailExistsAsync([FromQuery] string email)
         {
-            return await _userManager.FindByEmailAsync(email) != null;
+            if (string.IsNullOrEmpty(email)) return BadRequest(new ApiResponse(400, "Email is required"));
+            bool result = await _userManager.FindByEmailAsync(email) != null;
+            return result;
         }
 
         [Authorize]
@@ -110,7 +112,12 @@ namespace E_commerce_API.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, register.Password);
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400));
+            if (!result.Succeeded)
+            {
+                // Fix: Ensure that the error descriptions are concatenated into a single string
+                var errorDescriptions = string.Join(", ", result.Errors.Select(e => e.Description));
+                return BadRequest(new ApiResponse(400, errorDescriptions));
+            }
 
             return new UserDTO
             {

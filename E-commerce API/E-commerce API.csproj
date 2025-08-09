@@ -21,8 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Content\**" CopyToPublishDirectory="PreserveNewest"/>
+    <Content Include="Content\**" CopyToPublishDirectory="PreserveNewest" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

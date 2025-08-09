@@ -22,6 +22,7 @@ namespace E_commerce_API.Errors
 #pragma warning disable CS8603 // Possible null reference return.
             return statusCode switch
             {
+                399 => "Password must be at least 6 characters long, at least one uppercase letter, one special character ",
                 400 => "Bad Request",
                 401 => "You are not Authorized",
                 402 => "Payment required",
