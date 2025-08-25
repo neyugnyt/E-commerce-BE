@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\E-commerce API\E-commerce API.csproj" />
+    <ProjectReference Include="..\E-commerce API\E-commerceAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
